@@ -1,3 +1,3 @@
-import list from './dist/list';
+const list = require('./dist/list');
 
-export default list;
+module.exports = list;

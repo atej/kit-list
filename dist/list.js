@@ -1,12 +1,20 @@
-import '@johnlindquist/kit';
-import translate from '@vitalets/google-translate-api';
-import cheerio from 'cheerio';
-import { validateUrl, getUrl } from './utils/url';
-export default async function list(url, selectors, pageOptions) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
+const cheerio_1 = __importDefault(require("cheerio"));
+const google_translate_api_1 = __importDefault(require("@vitalets/google-translate-api"));
+const url_1 = require("./utils/url");
+async function list(url, selectors, pageOptions) {
     const { containerSelector, titleSelector, hrefSelector, descriptionSelector, metaSelector, } = selectors;
-    const { origin, href: pageUrl } = new URL(validateUrl(url));
-    const response = await get(pageUrl);
-    const $ = cheerio.load(response.data);
+    const { origin, href: pageUrl } = new URL((0, url_1.validateUrl)(url));
+    const { data: responseData } = await axios_1.default.get(pageUrl);
+    if (typeof responseData !== 'string') {
+        throw new Error('Oops! Not a valid HTML document.');
+    }
+    const $ = cheerio_1.default.load(responseData);
     const data = $(containerSelector)
         .map((_, container) => {
         const href = hrefSelector
@@ -16,7 +24,7 @@ export default async function list(url, selectors, pageOptions) {
             : $(container).attr('href')
                 ? $(container).attr('href')
                 : null;
-        const url = href ? getUrl(href, origin) : pageUrl;
+        const url = href ? (0, url_1.getUrl)(href, origin) : pageUrl;
         const title = titleSelector
             ? $(titleSelector, container).text().trim()
             : hrefSelector
@@ -35,11 +43,11 @@ export default async function list(url, selectors, pageOptions) {
     const choices = await Promise.all(data.map(async ({ meta, title, description, url: itemUrl }) => {
         const metaPart = meta ? ` [${meta}] ` : '';
         const translatedTitle = shouldTranslate
-            ? (await translate(title, pageOptions.translate)).text
+            ? (await (0, google_translate_api_1.default)(title, pageOptions.translate)).text
             : title;
         const translatedDescription = description
             ? shouldTranslate
-                ? (await translate(description, pageOptions.translate)).text
+                ? (await (0, google_translate_api_1.default)(description, pageOptions.translate)).text
                 : description
             : '';
         const translatedTitleWithMeta = (pageOptions?.meta?.afterTitle
@@ -56,3 +64,4 @@ export default async function list(url, selectors, pageOptions) {
     }));
     return { data, choices };
 }
+exports.default = list;

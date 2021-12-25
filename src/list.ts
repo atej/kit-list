@@ -1,6 +1,6 @@
-import '@johnlindquist/kit';
-import translate from '@vitalets/google-translate-api';
+import axios from 'axios';
 import cheerio from 'cheerio';
+import translate from '@vitalets/google-translate-api';
 import { validateUrl, getUrl } from './utils/url';
 import type { Choice } from '@johnlindquist/kit/types/core';
 import type { ListOptions, ItemSelectors, ItemData } from '../types';
@@ -20,9 +20,13 @@ export default async function list(
 
   const { origin, href: pageUrl } = new URL(validateUrl(url));
 
-  const response = await get(pageUrl);
+  const { data: responseData } = await axios.get(pageUrl);
 
-  const $ = cheerio.load(response.data as string);
+  if (typeof responseData !== 'string') {
+    throw new Error('Oops! Not a valid HTML document.');
+  }
+
+  const $ = cheerio.load(responseData);
 
   const data: ItemData[] = $(containerSelector)
     .map((_, container) => {

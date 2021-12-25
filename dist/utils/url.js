@@ -1,4 +1,7 @@
-export function validateUrl(str) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getUrl = exports.validateUrl = void 0;
+function validateUrl(str) {
     let urlObj;
     try {
         urlObj = new URL(str);
@@ -11,9 +14,11 @@ export function validateUrl(str) {
     }
     return urlObj.href;
 }
-export function getUrl(str, origin) {
+exports.validateUrl = validateUrl;
+function getUrl(str, origin) {
     if (str.includes('http:')) {
         return validateUrl(str);
     }
     return validateUrl(`${origin}${str}`);
 }
+exports.getUrl = getUrl;
