@@ -1,3 +1,1 @@
-const list = require('./dist/list');
-
-module.exports = list;
+module.exports = require('./dist/list').default;
