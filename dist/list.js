@@ -7,7 +7,7 @@ const axios_1 = __importDefault(require("axios"));
 const cheerio_1 = __importDefault(require("cheerio"));
 const google_translate_api_1 = __importDefault(require("@vitalets/google-translate-api"));
 const url_1 = require("./utils/url");
-async function list(url, selectors, pageOptions) {
+async function list(url, selectors, listOptions) {
     const { containerSelector, titleSelector, hrefSelector, descriptionSelector, metaSelector, } = selectors;
     const { origin, href: pageUrl } = new URL((0, url_1.validateUrl)(url));
     const { data: responseData } = await axios_1.default.get(pageUrl);
@@ -39,22 +39,22 @@ async function list(url, selectors, pageOptions) {
         return { title, url, description, meta };
     })
         .toArray();
-    const shouldTranslate = !!pageOptions && 'translate' in pageOptions;
+    const shouldTranslate = !!listOptions && 'translate' in listOptions;
     const choices = await Promise.all(data.map(async ({ meta, title, description, url: itemUrl }) => {
         const metaPart = meta ? ` [${meta}] ` : '';
         const translatedTitle = shouldTranslate
-            ? (await (0, google_translate_api_1.default)(title, pageOptions.translate)).text
+            ? (await (0, google_translate_api_1.default)(title, listOptions.translate)).text
             : title;
         const translatedDescription = description
             ? shouldTranslate
-                ? (await (0, google_translate_api_1.default)(description, pageOptions.translate)).text
+                ? (await (0, google_translate_api_1.default)(description, listOptions.translate)).text
                 : description
             : '';
-        const translatedTitleWithMeta = (pageOptions?.meta?.afterTitle
+        const translatedTitleWithMeta = (listOptions?.meta?.afterTitle
             ? `${translatedTitle}${metaPart}`
             : `${metaPart}${translatedTitle}`).trim();
         const choice = {
-            name: pageOptions?.meta?.hide
+            name: listOptions?.meta?.hide
                 ? translatedTitle
                 : translatedTitleWithMeta,
             description: translatedDescription || itemUrl,

@@ -12,7 +12,7 @@ export function validateUrl(str: string) {
 }
 
 export function getUrl(str: string, origin: string) {
-  if (str.includes('http:')) {
+  if (str.includes('http:') || str.includes('https:')) {
     return validateUrl(str);
   }
 

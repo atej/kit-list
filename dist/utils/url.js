@@ -16,7 +16,7 @@ function validateUrl(str) {
 }
 exports.validateUrl = validateUrl;
 function getUrl(str, origin) {
-    if (str.includes('http:')) {
+    if (str.includes('http:') || str.includes('https:')) {
         return validateUrl(str);
     }
     return validateUrl(`${origin}${str}`);
