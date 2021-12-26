@@ -112,9 +112,9 @@ A valid http/https url of the page to be scraped.
 
 #### `selectors` (required)
 ##### Type: `object`
-- `containerSelector` (required) - selector for a wrapper element (doubles as the url selector if no `urlSelector` is specified – useful for 'card' layouts where the 'card' is an anchor tag).
+- `containerSelector` (required) - selector for a wrapper element (doubles as the url selector if no `hrefSelector` is specified – useful for 'card' layouts where the 'card' is an anchor tag).
   > 🚨 All other selectors use the container element (specified by the `containerSelector`) as context
-- `urlSelector` (optional) - selector for the anchor tag which specifies the item url (doubles as the title selector if no `titleSelector` is specified)/
+- `hrefSelector` (optional) - selector for the anchor tag which specifies the item url (doubles as the title selector if no `titleSelector` is specified)/
 - `titleSelector` (optional) - selector for item title.
 - `descriptionSelector` (optional) - selector for item description.
 - `metaSelector` (optional) - selector for item meta (prepended to the title).
