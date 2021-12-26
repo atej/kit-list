@@ -11,7 +11,7 @@ I made this to scratch an itch of mine. There are sites I visit from time to tim
 `cd` into your `~/.kenv` folder:
 
 ```shell
-npm install @aseeemtaneja/kit-list@latest
+npm install @aseemtaneja/kit-list@latest
 ```
 
 ## Examples
