@@ -8,7 +8,7 @@ import type { ListOptions, ItemSelectors, ItemData } from '../types';
 export default async function list(
   url: string,
   selectors: ItemSelectors,
-  pageOptions?: ListOptions
+  listOptions?: ListOptions
 ) {
   const {
     containerSelector,
@@ -60,30 +60,30 @@ export default async function list(
     })
     .toArray();
 
-  const shouldTranslate = !!pageOptions && 'translate' in pageOptions;
+  const shouldTranslate = !!listOptions && 'translate' in listOptions;
 
   const choices = await Promise.all(
     data.map(async ({ meta, title, description, url: itemUrl }) => {
       const metaPart = meta ? ` [${meta}] ` : '';
 
       const translatedTitle = shouldTranslate
-        ? (await translate(title, pageOptions.translate)).text
+        ? (await translate(title, listOptions.translate)).text
         : title;
 
       const translatedDescription = description
         ? shouldTranslate
-          ? (await translate(description, pageOptions.translate)).text
+          ? (await translate(description, listOptions.translate)).text
           : description
         : '';
 
       const translatedTitleWithMeta = (
-        pageOptions?.meta?.afterTitle
+        listOptions?.meta?.afterTitle
           ? `${translatedTitle}${metaPart}`
           : `${metaPart}${translatedTitle}`
       ).trim();
 
       const choice: Choice<string> = {
-        name: pageOptions?.meta?.hide
+        name: listOptions?.meta?.hide
           ? translatedTitle
           : translatedTitleWithMeta,
         description: translatedDescription || itemUrl,
