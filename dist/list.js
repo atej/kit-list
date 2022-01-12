@@ -24,7 +24,11 @@ async function list(url, selectors, listOptions) {
             : $(container).attr('href')
                 ? $(container).attr('href')
                 : null;
-        const url = href ? (0, url_1.getUrl)(href, origin) : pageUrl;
+        const url = href
+            ? href[0] === '#'
+                ? (0, url_1.getUrl)(href, pageUrl)
+                : (0, url_1.getUrl)(href, origin)
+            : pageUrl;
         const title = titleSelector
             ? $(titleSelector, container).text().trim()
             : hrefSelector

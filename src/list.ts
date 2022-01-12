@@ -38,7 +38,11 @@ export default async function list(
         ? $(container).attr('href')
         : null;
 
-      const url = href ? getUrl(href, origin) : pageUrl;
+      const url = href
+        ? href[0] === '#'
+          ? getUrl(href, pageUrl)
+          : getUrl(href, origin)
+        : pageUrl;
 
       const title = titleSelector
         ? $(titleSelector, container).text().trim()
