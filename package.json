@@ -1,6 +1,6 @@
 {
   "name": "@aseemtaneja/kit-list",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "A helper for the Script Kit automation app to generate a list of items from an HTML document.",
   "main": "index.js",
   "scripts": {
