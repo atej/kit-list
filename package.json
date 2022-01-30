@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf ./node_modules/.cache ./dist",
     "dev": "tsc --watch --preserveWatchOutput",
     "build": "tsc",
-    "clean": "rimraf ./node_modules/.cache ./dist"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

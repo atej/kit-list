@@ -48,7 +48,7 @@ export default async function list(
         ? $(titleSelector, container).text().trim()
         : hrefSelector
         ? $(hrefSelector, container).text().trim()
-        : 'No title';
+        : $(container).text().trim() || 'No title';
 
       const description =
         descriptionSelector && $(descriptionSelector, container)

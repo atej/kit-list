@@ -33,7 +33,7 @@ async function list(url, selectors, listOptions) {
             ? $(titleSelector, container).text().trim()
             : hrefSelector
                 ? $(hrefSelector, container).text().trim()
-                : 'No title';
+                : $(container).text().trim() || 'No title';
         const description = descriptionSelector && $(descriptionSelector, container)
             ? $(descriptionSelector, container).text().trim()
             : '';
